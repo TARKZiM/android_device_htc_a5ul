@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2015 The Android Open Source Project
+# Copyright (C) 2015 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,24 +14,15 @@
 # limitations under the License.
 #
 
-#
-# This file is the build configuration for a full Android
-# build for maguro hardware. This cleanly combines a set of
-# device-specific aspects (drivers) with a device-agnostic
-# product configuration (apps). Except for a few implementation
-# details, it only fundamentally contains two inherit-product
-# lines, full and maguro, hence its name.
-#
-
-# Inherit a5ul-specific vendor tree
-$(call inherit-product-if-exists, vendor/htc/a5ul/a5ul-vendor.mk)
-
-# Inherit from a5ul
+# Inherit from m8 device
 $(call inherit-product, device/htc/a5ul/device.mk)
 
-# Set those variables here to overwrite the inherited values
-PRODUCT_NAME := full_a5ul
+# Inherit some common Lineage stuff.
+$(call inherit-product, vendor/lineage/config/common_full_phone.mk)
+
+# Device identifier. This must come after all inclusions.
+PRODUCT_NAME := lineage_a5ul
 PRODUCT_DEVICE := a5ul
 PRODUCT_BRAND := htc
-PRODUCT_MANUFACTURER := htc
 PRODUCT_MODEL := a5ul
+PRODUCT_MANUFACTURER := HTC

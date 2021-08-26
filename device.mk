@@ -14,19 +14,25 @@
 # limitations under the License.
 #
 
-# Local overlays
-DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
+# Overlay
+DEVICE_PACKAGE_OVERLAYS += \
+    $(LOCAL_PATH)/overlay \
+    $(LOCAL_PATH)/overlay-lineage
 
 # make MTP,ADB happier
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/init.qcom.usb.rc:root/init.qcom.usb.rc
+
+# Inherit a5ul-specific vendor tree
+$(call inherit-product-if-exists, vendor/htc/a5ul/a5ul-vendor.mk)
 
 # Inherit from a5-common
 $(call inherit-product, device/htc/a5-common/a5-common.mk)
 
 # Permissions
 PRODUCT_COPY_FILES += \
-    frameworks/base/nfc-extras/com.android.nfc_extras.xml:system/etc/permissions/com.android.nfc_extras.xml \
-    frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml
+    frameworks/native/data/etc/com.android.nfc_extras.xml:system/vendor/etc/permissions/com.android.nfc_extras.xml \
+    frameworks/native/data/etc/android.hardware.nfc.xml:system/vendor/etc/permissions/android.hardware.nfc.xml \
+    frameworks/native/data/etc/android.hardware.nfc.hce.xml:system/vendor/etc/permissions/android.hardware.nfc.hce.xml
 
 # NFC
 ifeq ($(TARGET_BUILD_VARIANT),user)
@@ -35,21 +41,18 @@ else
     NFCEE_ACCESS_PATH := $(LOCAL_PATH)/configs/nfcee_access_debug.xml
 endif
 
-# See https://github.com/CyanogenMod/android_external_libnfc-nci/blob/cm-14.1/halimpl/pn54x/Android.mk#L21
-# for magic values of NXP_CHIP_TYPE.
-NXP_CHIP_TYPE := 1
-
 PRODUCT_COPY_FILES += \
     $(NFCEE_ACCESS_PATH):system/etc/nfcee_access.xml \
     $(LOCAL_PATH)/configs/libnfc-nxp.conf:system/etc/libnfc-nxp.conf \
-    $(LOCAL_PATH)/configs/libnfc-brcm.conf:system/etc/libnfc-brcm.conf
+    $(LOCAL_PATH)/configs/libnfc-nci.conf:system/etc/libnfc-nci.conf
 
+# NFC
 PRODUCT_PACKAGES += \
-    NfcNci \
-    Tag \
+    android.hardware.nfc@1.0-impl \
     com.android.nfc_extras \
-    nfc_nci.pn54x.default 
+    NfcNci \
+    Tag
 
-# Overrides
-PRODUCT_COPY_FILES_OVERRIDES := \
-    $(LOCAL_PATH)/configs/apns-conf.xml:system/etc/apns-conf.xml
+# Soong namespaces
+PRODUCT_SOONG_NAMESPACES += \
+    $(LOCAL_PATH)
