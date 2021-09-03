@@ -19,9 +19,6 @@ DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay \
     $(LOCAL_PATH)/overlay-lineage
 
-# make MTP,ADB happier
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/init.qcom.usb.rc:root/init.qcom.usb.rc
-
 # Inherit a5ul-specific vendor tree
 $(call inherit-product-if-exists, vendor/htc/a5ul/a5ul-vendor.mk)
 
