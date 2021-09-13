@@ -64,7 +64,6 @@ void gsm_properties(char const default_network[])
     property_override("ro.ril.enable.sdr", "1");
     property_override("ro.ril.enable.r8fd", "1");
     property_override("ro.ril.disable.fd.plmn.prefix", "23402,23410,23411,23420,23594,27202,27205");
-    property_override("ro.telephony.ril_class", "A5RIL");
 }
 
 void vendor_load_properties()
@@ -106,7 +105,6 @@ void vendor_load_properties()
         property_override("ro.ril.set.mtusize", "1422");
         property_override("gsm.sim.operator.iso-country", "us");
         property_override("gsm.operator.iso-country", "us");
-        property_override("ro.telephony.ril_class", "A5SprRIL");
     } else {
         /* a5ul */
         gsm_properties("9");
